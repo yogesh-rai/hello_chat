@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Icon } from '@iconify/react';
-import styles from "./Styles.module.css";
+import styles from "./Form.module.css";
 
 function Register() {
 
