@@ -5,13 +5,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    & > p {
+        color: #897575;
+        font-size: 13px;
+        margin-top: 10px;
+    }
 }
 
-.container p {
+/* .container p {
     color: #897575;
     font-size: 13px;
     margin-top: 10px;
-}
+} */
 
 .form-wrapper {
     background-color: white;
