@@ -2,19 +2,23 @@ import React, { useState } from 'react'
 import { Icon } from '@iconify/react';
 import styles from "./Form.module.css";
 
-function Login() {
+function Register() {
 
-  const [show, setShow] = useState<boolean>(false);
+  const [show, setShow] = useState(false);
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
 
-  const showHandle = ():void => {
+  const showHandle = () => {
     setShow(!show)
   }
 
   return (
     <div className={styles["container"]}>
         <div className={styles['form-wrapper']}>
-            <h2>Login</h2>
+            <h2>Register</h2>
             <form >
+                <input type="text" placeholder="username" required />
                 <input type="emai" placeholder="email" required />
                 <div className={styles['input-password-field']}>
                   <input type={show ? "text" : "password"} placeholder="password" required />
@@ -26,12 +30,17 @@ function Login() {
                       }
                     </span>
                 </div>
-                <button>Sign In</button>
+                <input style={{ display: 'none' }} type="file" id="file" />
+                <label htmlFor="file">
+                  <Icon icon="bxs:image-add" color='#EE4E35' width="24" height="24" />
+                  <span>Add an avatar</span>
+                </label>
+                <button>Sign Up</button>
             </form>
-            <p>Don't have an account? Register</p>
+            <p>Already have an account? Login</p>
         </div>
     </div>
   )
 }
 
-export default Login
+export default Register

@@ -1,7 +1,7 @@
 import './App.css';
 import ChatPage from './pages/chats/ChatPage';
-import Login from './pages/forms/Login.tsx';
-import Register from './pages/forms/Register.tsx';
+import Login from './pages/forms/Login';
+import Register from './pages/forms/Register';
 import { Routes, Route } from 'react-router-dom';
 
 
