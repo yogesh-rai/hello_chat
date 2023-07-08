@@ -53,7 +53,7 @@ const loginUser = async(req, res) => {
     try {
         const user = await User.findOne({ email });
 
-        if(user || (await user.verifyPassword(password))) {
+        if(user && (await user.verifyPassword(password))) {
             res.status(201).json({
                 _id: user._id,
                 name: user.name,
