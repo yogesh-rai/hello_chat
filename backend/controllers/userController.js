@@ -74,4 +74,23 @@ const loginUser = async(req, res) => {
     }
 }
 
-module.exports = { registerUser, loginUser };
+const getAllUsers = async(req, res) => {
+    // console.log(req);
+    const { query } = req;
+    let searchTerm = {};
+    if (query.search) {
+        searchTerm = { name: { $regex: query.search, $options: "i" } };
+    }
+
+    try {
+        const allUsers = await User.find(searchTerm).find({ _id: { $ne: req.user._id } });
+        res.send(allUsers);
+
+    } catch (error) {
+        res.status(400).json({
+            error: error?.message,
+        })
+    }
+}
+
+module.exports = { registerUser, loginUser, getAllUsers };

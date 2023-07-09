@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import styles from "./Form.module.css";
 import axios from 'axios';
 import { Oval } from 'react-loader-spinner';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
@@ -116,7 +116,6 @@ function Register() {
             </form>
             <p>Already have an account? <Link to='/'>Login</Link></p>
         </div>
-        <ToastContainer />
     </div>
   )
 }
