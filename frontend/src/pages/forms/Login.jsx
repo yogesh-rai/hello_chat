@@ -66,7 +66,7 @@ function Login() {
         pauseOnHover: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
       setLoading(false);
     }
   }

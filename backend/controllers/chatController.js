@@ -12,12 +12,12 @@ const accessChat = async(req, res) => {
     try {
         let isChat = await Chat.find({
             $and: [
-                { users: {$elemMatch: { $eq: req.user._id }} },
+                { users: {$elemMatch: { $eq: req.user._id }} }, 
                 { users: {$elemMatch: { $eq: receiverId }} },
             ],
         }).populate("users").populate("latestMessage");
 
-        isChat = User.populate(isChat, {
+        isChat = await User.populate(isChat, {
             path: 'latestMessage.sender',
             select: 'name picture email',
         })
@@ -25,7 +25,6 @@ const accessChat = async(req, res) => {
         // console.log(isChat);
 
         if (isChat.length > 0) {
-            console.log(isChat);
             res.send(isChat[0]);
         } else {
             const chatData = {
@@ -48,8 +47,22 @@ const accessChat = async(req, res) => {
     } catch (error) {
         res.status(400).json({
             error: error?.message,
-        })
+        });
     }
 }
 
-module.exports = { accessChat };
+const fetchChat = async(req, res) => {
+    try {
+        const chatResult = await Chat.find({ users: { $in: req.user._id } })
+        .populate("users").populate("latestMessage").sort({ updatedAt: -1 });
+
+        res.status(200).send(chatResult);
+
+    } catch (error) {
+        res.status(400).json({
+            error: error?.message,
+        });
+    }
+}
+
+module.exports = { accessChat, fetchChat };

@@ -84,7 +84,13 @@ const getAllUsers = async(req, res) => {
 
     try {
         const allUsers = await User.find(searchTerm).find({ _id: { $ne: req.user._id } });
-        res.send(allUsers);
+        // console.log(allUsers);
+        if (allUsers.length > 0) {
+            res.send(allUsers);
+        } else {
+            throw new Error('No user found!')
+        }
+        
 
     } catch (error) {
         res.status(400).json({
