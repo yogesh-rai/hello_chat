@@ -74,6 +74,11 @@
     }
 }
 
+.search-result{
+    max-height: 160px;
+    overflow-y: auto;
+}
+
 .user-chats {
     display: flex;
     /* align-items: center; */

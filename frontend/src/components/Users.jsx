@@ -1,37 +1,24 @@
 import React from 'react'
+import { ChatState } from '../Context/ChatProvider';
 import styles from '../pages/chats/ChatPage.module.css';
+import UserList from './UserList';
 
 const  Users = () => {
+
+  const { selectedChat } =  ChatState();
+
+  const { users } = selectedChat || [];
+
+  const recieverName = users?.length > 0 ? users[1] : '';
+
   return (
     <div>
-        <div className={styles['user-chats']}>
-            <img src="https://media.istockphoto.com/id/1278978817/photo/portrait-of-happy-mature-man-smiling.jpg?s=612x612&w=0&k=20&c=GPniKSszzPgprveN7sCT5mb-_L3-RSlGAOAsmoDaafw=" alt="user-img"/>
-            <div className={styles['user-info']}>
-                <span>John</span>
-                <p>hello</p>
-            </div>
-        </div>
-        <div className={styles['user-chats']}>
-            <img src="https://media.istockphoto.com/id/1278978817/photo/portrait-of-happy-mature-man-smiling.jpg?s=612x612&w=0&k=20&c=GPniKSszzPgprveN7sCT5mb-_L3-RSlGAOAsmoDaafw=" alt="user-img"/>
-            <div className={styles['user-info']}>
-                <span>John</span>
-                <p>hello</p>
-            </div>
-        </div>
-        <div className={styles['user-chats']}>
-            <img src="https://media.istockphoto.com/id/1278978817/photo/portrait-of-happy-mature-man-smiling.jpg?s=612x612&w=0&k=20&c=GPniKSszzPgprveN7sCT5mb-_L3-RSlGAOAsmoDaafw=" alt="user-img"/>
-            <div className={styles['user-info']}>
-                <span>John</span>
-                <p>hello</p>
-            </div>
-        </div>
-        <div className={styles['user-chats']}>
-            <img src="https://media.istockphoto.com/id/1278978817/photo/portrait-of-happy-mature-man-smiling.jpg?s=612x612&w=0&k=20&c=GPniKSszzPgprveN7sCT5mb-_L3-RSlGAOAsmoDaafw=" alt="user-img"/>
-            <div className={styles['user-info']}>
-                <span>John</span>
-                <p>hello</p>
-            </div>
-        </div>
+        {
+            users && 
+            <UserList
+              name={recieverName.name}
+            />
+        }
     </div>
   )
 }
