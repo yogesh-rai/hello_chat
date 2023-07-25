@@ -84,7 +84,7 @@
     /* align-items: center; */
     gap: 10px;
     padding: 10px;
-    padding-bottom: 3px;
+    padding-bottom: 7px;
     cursor: pointer;
 
     & > img {

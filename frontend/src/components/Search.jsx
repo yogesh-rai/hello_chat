@@ -9,7 +9,7 @@ import UserList from './UserList';
 
 const Search = () => {
 
-  const { user, setSelectedChat } =  ChatState();
+  const { loggedInUser, setSelectedChat, chats, setChats } =  ChatState();
 
   const [searchRes, setSearchRes] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,7 +31,7 @@ const Search = () => {
       try {
         const config = {
           headers: {
-            authorization: `Bearer ${user.token}`,
+            authorization: `Bearer ${loggedInUser.token}`,
           }
         };
 
@@ -63,15 +63,18 @@ const Search = () => {
       const config = {
         headers: {
           "Content-type": "application/json",
-          authorization: `Bearer ${user.token}`,
+          authorization: `Bearer ${loggedInUser.token}`,
         }
       };
 
       const response = await axios.post('api/chat', {receiverId},  config);
       const { data } = response;
 
+      if (!chats.find((c) => c._id === data._id)) {
+        setChats([data, ...chats]);
+      }
+
       setSelectedChat(data);
-      console.log(data);
       setSearchQuery('');
       setSearchRes([]);
       
