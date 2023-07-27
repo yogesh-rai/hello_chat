@@ -11,13 +11,14 @@ const  Users = () => {
   const { loggedInUser, selectedChat, setSelectedChat, chats, setChats } =  ChatState();
 
   // const { users } = selectedChat || [];
+  console.log(loggedInUser);
 
   const fetchChats = async () => {
 
     try {
       const config = {
         headers: {
-          authorization: `Bearer ${loggedInUser.token}`,
+          authorization: `Bearer ${loggedInUser?.token}`,
         }
       };
 
@@ -28,6 +29,7 @@ const  Users = () => {
       // console.log(data);
       
     } catch (error) {
+      console.log(error);
       const { response } = error;
       const errorMess = response.data.error || error.message || 'Error fetching the chats!';
       toast.error(`${errorMess}`, {
@@ -58,7 +60,7 @@ const  Users = () => {
                 <UserList
                   name={getUsersName(loggedInUser, chat.users)}
                   handleFunction={() => setSelectedChat(chat)}
-                  selectedUser={selectedChat._id === chat._id}
+                  selectedUser={selectedChat?._id === chat._id}
                 />
               </div>
             ))

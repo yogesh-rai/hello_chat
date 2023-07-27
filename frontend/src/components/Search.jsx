@@ -26,7 +26,7 @@ const Search = () => {
 
   const handleSearch = async (evt) => {
     // console.log(searchQuery);
-    if (evt.keyCode === 13 && searchQuery !== '') {
+    if (evt.key === 'Enter' && searchQuery !== '') {
       setResLoading(true);
       try {
         const config = {

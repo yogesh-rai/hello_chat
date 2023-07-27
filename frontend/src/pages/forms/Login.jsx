@@ -39,7 +39,7 @@ function Login() {
         }
       }
       const result = await axios.post('/api/user/login', { email, password }, config);
-      console.log(result);
+
       toast.success('Logged In succesfully!', {
         position: "bottom-center",
         autoClose: 5000,
@@ -50,7 +50,7 @@ function Login() {
         theme: "colored",
       });
 
-      localStorage.setItem('userData', JSON.stringify(result.data));
+      localStorage.setItem('userData', JSON.stringify(result?.data));
       navigate('/chats');
       setLoading(false);
       
