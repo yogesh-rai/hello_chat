@@ -5,6 +5,7 @@ import MessageInput from './MessageInput';
 import { ChatState } from '../Context/ChatProvider';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { getUsersName } from '../config/utils';
 
 const ChatPanel = () => {
 
@@ -49,11 +50,15 @@ const ChatPanel = () => {
     fetchMessages();
   }, [selectedChat]);
 
+  console.log(selectedChat);
+
+  const selectedUser = getUsersName(loggedInUser, selectedChat?.users);
+
 console.log(messages);
   return (
     <div className={styles['chat-panel']}>
       <div className={styles['chat-panel-header']}>
-        <span>John</span>
+        <span>{selectedUser}</span>
         <button>create a group</button>
       </div>
       <ChatMessages messages={messages} isLoading={isLoading} />

@@ -20,7 +20,7 @@ const NavBar = () => {
         <div className={styles['logo']}>Hello Chat</div>
         <div  className={styles['admin']}>
             {/* <img src='https://media.istockphoto.com/id/1278978817/photo/portrait-of-happy-mature-man-smiling.jpg?s=612x612&w=0&k=20&c=GPniKSszzPgprveN7sCT5mb-_L3-RSlGAOAsmoDaafw=' alt='' /> */}
-            <Avatar name={loggedInUser?.name} style={{ border: '2px solid white' }} textSizeRatio={1.75} size="30" round={true} color={Avatar.getRandomColor('sitebase', ['blue', 'orange', 'green'])} />
+            <Avatar name={loggedInUser?.name} style={{ border: '2px solid white' }} textSizeRatio={1.75} size="30" round={true} />
             <span>{loggedInUser?.name}</span>
             <button onClick={logoutHandler}>logout</button>
         </div>

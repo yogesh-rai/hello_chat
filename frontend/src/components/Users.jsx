@@ -50,7 +50,7 @@ const  Users = () => {
   
 
   // console.log(selectedChat);
-  // console.log(chats);
+  console.log(chats);
   return (
     <div>
         {
