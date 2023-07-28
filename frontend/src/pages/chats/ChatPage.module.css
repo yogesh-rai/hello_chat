@@ -170,7 +170,7 @@
 }
 
 .message-info {
-    /* display: flex; */
+    display: flex;
     & > img {
         height: 32px;
         width: 32px;
@@ -181,13 +181,17 @@
 
 .message-content {
     max-width: 50%;
+    margin-left: -5px;
     & > p {
         max-width: max-content;
         font-weight: 500;
         background-color: white;
-        padding: 5px 10px;
+        padding: 6px 10px;
         border-radius: 0px 10px 10px 10px;
     }
+}
+
+.sender-info {
 }
 
 .message.owner {
@@ -196,9 +200,15 @@
 
 .message.owner .message-content{
     align-items: flex-end;
+    margin-right: -5px;
     & > p {
         background-color: #f0604a;
         color: white;
-        border-radius: 10px 0px 10px 10px;
+        border-radius: 10px 10px 0px 10px;
     }
+}
+
+.message.owner .sender-info{
+    /* display: flex; */
+    align-self: flex-end;
 }

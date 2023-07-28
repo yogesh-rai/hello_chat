@@ -21,9 +21,7 @@ const ChatMessages = ({ messages, isLoading }) => {
         /> 
         :
         messages.length > 0 && messages.map((m) => (
-          <div>
-            <Message message={m}/>
-          </div>
+          <Message message={m}/>
         ))
       }
     </div>
