@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import styles from '../pages/chats/ChatPage.module.css';
 import Avatar from 'react-avatar';
 import { ChatState } from '../Context/ChatProvider';
@@ -8,9 +8,16 @@ const Message = ({ message }) => {
   
   const { loggedInUser } =  ChatState();
 
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
+  
+
 
   return (
-    <div className={`${styles.message} ${sender?._id === loggedInUser?._id ? styles.owner : ''}`}>
+    <div ref={ref} className={`${styles.message} ${sender?._id === loggedInUser?._id ? styles.owner : ''}`}>
       <div className={styles['message-info']}>
         {/* <img src="https://media.istockphoto.com/id/1278978817/photo/portrait-of-happy-mature-man-smiling.jpg?s=612x612&w=0&k=20&c=GPniKSszzPgprveN7sCT5mb-_L3-RSlGAOAsmoDaafw=" alt="user-img"/> */}
         <div className={styles['sender-info']}>

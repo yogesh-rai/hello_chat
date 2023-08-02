@@ -26,7 +26,7 @@ const  Users = () => {
       const { data } = response;
 
       setChats(data);
-      // console.log(data);
+      console.log(data);
       
     } catch (error) {
       console.log(error);
@@ -45,8 +45,8 @@ const  Users = () => {
   }
 
   useEffect(() => {
-    fetchChats();
-  }, [])
+    if (loggedInUser) fetchChats();
+  }, []);
   
 
   // console.log(selectedChat);

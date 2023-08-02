@@ -4,6 +4,7 @@ import styles from '../pages/chats/ChatPage.module.css';
 import { Oval } from 'react-loader-spinner';
 
 const ChatMessages = ({ messages, isLoading }) => {
+  console.log(messages);
   return (
     <div className={styles['chat-messages']}>
       {
