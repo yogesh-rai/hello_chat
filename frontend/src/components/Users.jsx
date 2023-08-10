@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider';
 // import styles from '../pages/chats/ChatPage.module.css';
 import UserList from './UserList';
@@ -8,10 +8,9 @@ import { toast } from 'react-toastify';
 
 const  Users = () => {
 
-  const { loggedInUser, selectedChat, setSelectedChat, chats, setChats } =  ChatState();
+  const [loggedUser, setLoggedUser] = useState();
 
-  // const { users } = selectedChat || [];
-  console.log(loggedInUser);
+  const { loggedInUser, selectedChat, setSelectedChat, chats, setChats } =  ChatState();
 
   const fetchChats = async () => {
 
@@ -45,7 +44,10 @@ const  Users = () => {
   }
 
   useEffect(() => {
-    if (loggedInUser) fetchChats();
+    setLoggedUser(JSON.parse(localStorage.getItem('userData')));
+    if (loggedUser) {
+      fetchChats();
+    }
   }, []);
   
 
@@ -58,7 +60,7 @@ const  Users = () => {
             chats.map((chat) => (
               <div>
                 <UserList
-                  name={getUsersName(loggedInUser, chat.users)}
+                  name={getUsersName(loggedUser, chat.users)}
                   handleFunction={() => setSelectedChat(chat)}
                   selectedUser={selectedChat?._id === chat._id}
                 />

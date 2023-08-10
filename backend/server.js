@@ -48,6 +48,14 @@ io.on("connection", (socket) => {
         console.log(`user joined room ${roomId}`);
     });
 
+    socket.on("typing", (roomId) => {
+        socket.in(roomId).emit("typing");
+    })
+
+    socket.on("stop typing", (roomId) => {
+        socket.in(roomId).emit("stop typing");
+    })
+
     socket.on("new message", (newMessageRecieved) => {
         let chat = newMessageRecieved?.chat;
 
