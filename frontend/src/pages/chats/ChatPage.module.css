@@ -79,12 +79,11 @@
     overflow-y: auto;
 }
 
-.user-chats {
+.userlists {
     display: flex;
-    /* align-items: center; */
+    align-items: center;
     gap: 10px;
-    padding: 10px;
-    padding-bottom: 7px;
+    padding: 7px 10px;
     cursor: pointer;
 
     & > img {
@@ -99,6 +98,12 @@
     }
 }
 
+.userlists.userChats {
+    align-items: normal;
+    padding-top: 9px;
+    padding-bottom: 3px;
+}
+
 .user-info {
     & > span {
         font-size: 15px;
@@ -107,7 +112,7 @@
     
     & > p {
         margin-top: 1px;
-        font-size: 14px;
+        font-size: 13px;
         color: #f4f4f4;
     }
 }
@@ -127,6 +132,15 @@
     color: white;
 }
 
+.default-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+    font-size: 28px;
+    color: #71797E;
+}
+
 .chat-messages {
     padding: 20px;
     height: calc(100% - 155px);
@@ -136,14 +150,16 @@
 .messaage-input-box {
     background-color: white;
     padding: 10px;
+    padding-bottom: 5px;
     display: flex;
     align-items: center;
     & > input {
         height: 30px;
         padding: 10px;
+        padding-left: 15px;
         background-color: white;
         width: 90%;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 14px;
         border: none;
         outline: none;
@@ -154,13 +170,27 @@
         }
     }
 
-    & > svg {
+    & svg {
         font-size: 28px;
         color: #EC2C3B;
         cursor: pointer;
         margin-left: 10px;
+
+        &:hover{
+            color: #EE3541 !important;
+        }
+    }
+
+    & aside {
+        position: absolute !important;
+        top: 220px
     }
 }
+
+/* .messaage-input-box .epr-main {
+    position: absolute;
+    top: -460px
+} */
 
 .message {
     display: flex;
@@ -192,9 +222,6 @@
     }
 }
 
-.sender-info {
-}
-
 .message.owner {
     flex-direction: row-reverse;
 }
@@ -213,4 +240,47 @@
 .message.owner .sender-info{
     /* display: flex; */
     align-self: flex-end;
+}
+
+
+@media screen and (max-width: 1200px) {
+    .admin {
+        & > span {
+            display: none;
+        }
+    }
+
+    .chat-panel-header {
+        & svg {
+            height: 23px;
+            width: 23px;
+        }
+    }
+
+    .messaage-input-box {
+        & svg {
+            height: 23px;
+            width: 23px;
+        }
+    }
+}
+
+@media screen and (max-width: 745px) {
+    .logo {
+        display: none;
+    }
+
+    .chat-panel-header {
+        & svg {
+            height: 20px;
+            width: 20px;
+        }
+    }
+
+    .messaage-input-box {
+        & svg {
+            height: 21px;
+            width: 21px;
+        }
+    }
 }

@@ -21,13 +21,16 @@ const Message = ({ message }) => {
       <div className={styles['message-info']}>
         {/* <img src="https://media.istockphoto.com/id/1278978817/photo/portrait-of-happy-mature-man-smiling.jpg?s=612x612&w=0&k=20&c=GPniKSszzPgprveN7sCT5mb-_L3-RSlGAOAsmoDaafw=" alt="user-img"/> */}
         <div className={styles['sender-info']}>
-          <Avatar name={sender?.name} style={{ border: '2px solid white' }} size="30" round={true} />
+          <Avatar name={sender?.name} src={sender.picture} style={{ border: '2px solid white' }} size="33" round={true} />
         </div>
+        {/* <span>12:00 PM</span> */}
       </div>
       <div className={styles['message-content']}>
         <p>{content}</p>
+        {/* <span>12:00 PM</span> */}
         {/* <p>Hi how are you Hi how are you Hi how are youHi how are youHi how are you Hi how are you Hi how are you Hi how are you Hi how are you Hi how are youHi how are you Hi how are you Hi how are you Hi how are you</p> */}
       </div>
+      {/* <span>12:00 PM</span> */}
     </div>
   )
 }

@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider';
 // import styles from '../pages/chats/ChatPage.module.css';
 import UserList from './UserList';
-import { getUsersName } from '../config/utils';
+import { getUserPic, getUsersName } from '../config/utils';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const  Users = () => {
+const  Users = ({messages}) => {
 
   const [loggedUser, setLoggedUser] = useState();
 
-  const { loggedInUser, selectedChat, setSelectedChat, chats, setChats } =  ChatState();
+  const { loggedInUser, selectedChat, setSelectedChat, chats, setChats, fetchAgain, setFetchAgain } =  ChatState();
 
   const fetchChats = async () => {
 
@@ -25,10 +25,9 @@ const  Users = () => {
       const { data } = response;
 
       setChats(data);
-      console.log(data);
+
       
     } catch (error) {
-      console.log(error);
       const { response } = error;
       const errorMess = response.data.error || error.message || 'Error fetching the chats!';
       toast.error(`${errorMess}`, {
@@ -44,28 +43,40 @@ const  Users = () => {
   }
 
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem('userData')));
-    if (loggedUser) {
-      fetchChats();
-    }
-  }, []);
+    // setLoggedUser(JSON.parse(localStorage.getItem('userData')));
+    // if (loggedInUser === loggedInUser) {
+    //   fetchChats();
+    // }
+    fetchChats();
+  }, [loggedInUser, fetchAgain]);
   
 
-  // console.log(selectedChat);
-  console.log(chats);
+ 
+  const getLatestMessage = (chat) => {
+    if (!chat.latestMessage) return 'Draft';
+    const str = chat?.latestMessage?.content.length > 13
+    ? chat.latestMessage?.content.substring(0, 14) + "..."
+    : chat.latestMessage?.content
+    return str;
+  };
+
+
+
   return (
     <div>
         {
-            chats && 
-            chats.map((chat) => (
-              <div>
-                <UserList
-                  name={getUsersName(loggedUser, chat.users)}
-                  handleFunction={() => setSelectedChat(chat)}
-                  selectedUser={selectedChat?._id === chat._id}
-                />
-              </div>
-            ))
+          chats && 
+          chats.map((chat) => (
+            <div>
+              <UserList
+                name={getUsersName(loggedInUser, chat.users)}
+                pic={getUserPic(loggedInUser, chat.users)}
+                handleFunction={() => setSelectedChat(chat)}
+                selectedUser={selectedChat?._id === chat._id}
+                latestMessage={getLatestMessage(chat)}
+              />
+            </div>
+          ))
         }
     </div>
   )

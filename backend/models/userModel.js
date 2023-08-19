@@ -8,7 +8,6 @@ const userSchema = mongoose.Schema(
         password: { type: String, required: true },
         picture: {
             type: String,
-            default: "https://img.freepik.com/free-icon/user_318-159711.jpg",
         }
     },
     {

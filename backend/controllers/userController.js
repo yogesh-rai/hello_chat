@@ -75,7 +75,6 @@ const loginUser = async(req, res) => {
 }
 
 const getAllUsers = async(req, res) => {
-    // console.log(req);
     const { query } = req;
     let searchTerm = {};
     if (query.search) {
@@ -84,7 +83,6 @@ const getAllUsers = async(req, res) => {
 
     try {
         const allUsers = await User.find(searchTerm).find({ _id: { $ne: req.user._id } });
-        // console.log(allUsers);
         if (allUsers.length > 0) {
             res.send(allUsers);
         } else {

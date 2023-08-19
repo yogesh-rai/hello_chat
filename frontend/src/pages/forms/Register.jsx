@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from "./Form.module.css";
 import axios from 'axios';
-import { Oval } from 'react-loader-spinner';
+import { Oval, ThreeDots } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,6 +14,8 @@ function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [picture, setPicture] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
 
   const showHandle = () => {
@@ -32,9 +34,32 @@ function Register() {
     setPassword(evt.target.value);
   }
 
+  const uploadAvatarHandler = (evt) => {
+    const profilePic = evt.target.files[0]
+    if (!profilePic) return;
+
+    if (profilePic.type === 'image/png' || profilePic.type === 'image/jpeg') {
+      setIsUploading(true);
+      const data = new FormData();
+      data.append("file", profilePic);
+      data.append("upload_preset", "hello-chat");
+      data.append("cloud_name", "dsg6r4u8l");
+      fetch("https://api.cloudinary.com/v1_1/dsg6r4u8l/image/upload", {
+        method: 'post',
+        body: data,
+      }).then((res) => res.json())
+        .then(resData => {
+          setPicture(resData.url.toString());
+          setIsUploading(false);
+        })
+        .catch((err) => {
+          setIsUploading(false);
+        })
+    }
+  }
+
   const submitHandler = async(evt) => {
     evt.preventDefault();
-    // console.log(name, email, password);
     setLoading(true);
 
     try {
@@ -43,8 +68,7 @@ function Register() {
           "content-type": "application/json",
         }
       }
-      const result = await axios.post('/api/user', { name, email, password }, config);
-      console.log(result);
+      const result = await axios.post('/api/user', { name, email, password, picture }, config);
       toast.success('Registered succesfully!', {
         position: "bottom-center",
         autoClose: 5000,
@@ -60,7 +84,6 @@ function Register() {
       setLoading(false);
       
     } catch (error) {
-      console.log(error);
       const { response } = error;
       const errorMess = response.data.error || error.message || 'Error Occured!';
       toast.error(`${errorMess}`, {
@@ -93,10 +116,15 @@ function Register() {
                       }
                     </span>
                 </div>
-                <input style={{ display: 'none' }} type="file" id="file" />
+                <input style={{ display: 'none' }} type="file" id="file" onChange={uploadAvatarHandler}/>
                 <label htmlFor="file">
                   <Icon icon="bxs:image-add" color='#EE4E35' width="24" height="24" />
-                  <span>Add an avatar</span>
+                  {
+                    isUploading ? 
+                    <span style={{ color: '#EE4E35' }}>uplaoding...</span>
+                    :
+                    <span style={{ color: picture ? '#EE4E35' : '' }}>{picture ? 'Avatar added' : 'Add an avatar'}</span>
+                  }
                 </label>
                 {loading ? 
                     <Oval

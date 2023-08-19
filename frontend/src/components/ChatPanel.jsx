@@ -4,7 +4,6 @@ import ChatMessages from './ChatMessages';
 import MessageInput from './MessageInput';
 import { ChatState } from '../Context/ChatProvider';
 import { Icon } from '@iconify/react';
-import animationData from '../animations/typing.json';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { getUsersName } from '../config/utils';
@@ -14,24 +13,35 @@ import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import NotificationBadge from 'react-notification-badge';
 import {Effect} from 'react-notification-badge';
+import { useNavigate } from 'react-router-dom';
 
 
 const ENDPOINT = "http://localhost:5000";
 
-let socket, selectedChatCompare;
+var socket, selectedChatCompare;
 
-const ChatPanel = () => {
+const ChatPanel = ({messages, setMessages}) => {
 
-  const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
-  const [typing, setTyping] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
   const [socketConnection, setSocketConnection] = useState(false);
-  const { loggedInUser, selectedChat, setSelectedChat, notification, setNotification } =  ChatState();
+  const { loggedInUser, selectedChat, setSelectedChat, notification, setNotification, fetchAgain, setFetchAgain } =  ChatState();
+
+  useEffect(() => {
+    setSelectedChat(null);
+  }, [loggedInUser]);
+
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    localStorage.removeItem('userData');
+    navigate('/');
+  }
 
   const fetchMessages = async () => {
-    if (!selectedChat) return;
+    if (!selectedChat){
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -44,7 +54,6 @@ const ChatPanel = () => {
       const response = await axios.get(`api/message/${selectedChat?._id}`, config);
 
       const { data } = response;
-      console.log(data);
       setMessages(data);
 
       socket?.emit("join chat", selectedChat?._id);
@@ -66,18 +75,16 @@ const ChatPanel = () => {
   };
 
   useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", loggedInUser);
+    socket.on("connected", () => setSocketConnection(true));
+  }, [selectedChat]);
+
+  useEffect(() => {
     fetchMessages();
 
     selectedChatCompare = selectedChat;
 
-    socket = io(ENDPOINT);
-
-    socket.emit("setup", loggedInUser);
-    socket.on("connected", () => {
-      setSocketConnection(true);
-    });
-    socket.on("typing", () => setIsTyping(true));
-    socket.on("stop typing", () => setIsTyping(false));
   }, [selectedChat]);
 
   useEffect(()=> {
@@ -85,9 +92,11 @@ const ChatPanel = () => {
       if(!selectedChatCompare || selectedChatCompare?._id !== newMessageRecieved?.chat._id) {
         if(!notification.includes(newMessageRecieved)) {
           setNotification([newMessageRecieved, ...notification]);
+          setFetchAgain(!fetchAgain);
         }
       } else {
         setMessages([...messages, newMessageRecieved]);
+        setFetchAgain(!fetchAgain);
       }
     });
   });
@@ -95,7 +104,6 @@ const ChatPanel = () => {
   const sendMessage = async (e) => {
     if ((e.type === 'click' || (e.type === 'keydown' && e.key === 'Enter')) && newMessage.trim() !== '') {
       setNewMessage('');
-      socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
           headers: {
@@ -113,10 +121,10 @@ const ChatPanel = () => {
         )
 
         const { data } = response;
-        console.log(data);
         setMessages([...messages, data]);
 
         socket.emit("new message", data);
+        setFetchAgain(!fetchAgain);
 
       } catch (error) {
         const { response } = error;
@@ -136,36 +144,7 @@ const ChatPanel = () => {
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
-
-    if(!socketConnection) return;
-
-    if(!typing) {
-      setTyping(true);
-      socket.emit("typing", selectedChat._id);
-    }
-    
-    let lastTypedTime = new Date().getTime();
-    var timer = 3000;
-    setTimeout(() => {
-      var currTime = new Date().getTime();
-      var timeDiff = currTime - lastTypedTime;
-
-      if(timeDiff >= timer && typing) {
-        socket.emit("stop typing", selectedChat._id);
-        setTyping(false);
-      }
-
-    }, timer);
   }
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true, 
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  };
 
   const selectedUser = getUsersName(loggedInUser, selectedChat?.users);
 
@@ -173,8 +152,9 @@ const ChatPanel = () => {
     <div className={styles['chat-panel']}>
       <div className={styles['chat-panel-header']}>
         <span>{selectedUser}</span>
+        <div>
         <Menu menuButton={
-          <MenuButton style={{ border: 'none', background: 'transparent', cursor: 'pointer', marginRight: '25px' }}>
+          <MenuButton style={{ border: 'none', background: 'transparent', cursor: 'pointer', marginRight: '12px' }}>
             <NotificationBadge count={notification.length} effect={Effect.SCALE}/>
             <Icon icon="ooui:bell" color="white" width="25" height="25" />
           </MenuButton>
@@ -196,14 +176,26 @@ const ChatPanel = () => {
             <MenuItem>No new messages</MenuItem>
           }
         </Menu>
-        {/* <button>create a group</button> */}
+        <Icon icon="mingcute:power-fill"  onClick={logoutHandler} width="25" height="25" alt='logout' style={{ cursor: 'pointer', marginRight: '12px' }}/>
+        </div>
       </div>
-      <ChatMessages messages={messages} isLoading={isLoading} isTyping={isTyping}/>
-      <MessageInput 
-        newMessage={newMessage}
-        sendMessageHandler={(event) => sendMessage(event)}
-        onTyping={(event) => typingHandler(event)}
-      />
+      {
+        selectedChat ? 
+        <>
+          <ChatMessages messages={messages} isLoading={isLoading} />
+          <MessageInput 
+            newMessage={newMessage}
+            sendMessageHandler={(event) => sendMessage(event)}
+            onTyping={(event) => typingHandler(event)}
+            setNewMessage={setNewMessage}
+          />
+        </> 
+        :
+        <div>
+          <div className={styles['default-screen']}>Choose a chat to start conversation</div>
+        </div>
+      }
+      
     </div>
   )
 }

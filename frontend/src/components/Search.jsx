@@ -118,6 +118,7 @@ const Search = () => {
                 <UserList
                   name={item?.name}
                   key={item._id}
+                  pic={item?.picture}
                   handleFunction={() => accessChat(item._id)}
                 />
               ))

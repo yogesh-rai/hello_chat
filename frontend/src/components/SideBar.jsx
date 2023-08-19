@@ -4,12 +4,12 @@ import NavBar from './NavBar';
 import Search from './Search';
 import Users from './Users';
 
-const SideBar = () => {
+const SideBar = ({messages}) => {
   return (
     <div className={styles['sidebar']}>
       <NavBar />
       <Search />
-      <Users />
+      <Users messages={messages} />
     </div>
   )
 }

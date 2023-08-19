@@ -1,18 +1,47 @@
-import { useEffect, useState } from 'react'
+import { useState, useRef, useEffect } from 'react';
 import { Icon } from '@iconify/react';
+import EmojiPicker from 'emoji-picker-react';
 import styles from '../pages/chats/ChatPage.module.css';
-import { ChatState } from '../Context/ChatProvider';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import io from 'socket.io-client';
 
-const MessageInput = ({ newMessage, sendMessageHandler, onTyping }) => {
+const MessageInput = ({ newMessage, sendMessageHandler, onTyping, setNewMessage }) => {
+
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  let emojiPickerRef = useRef();
+
+  useEffect(() => {
+    let handler = (e) => {
+      if (!emojiPickerRef.current?.contains(e.target)) {
+        setShowEmojiPicker(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handler);
+
+    return () => {
+      document.removeEventListener('mousedown', handler);
+    }
+  });
+  
+
+  const emojiPickerHandler = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  }
+
+  const emojiSelectHandler = (emoji) => {
+    let msg = newMessage;
+    msg += emoji?.emoji;
+    setNewMessage(msg);
+  }
 
   return (
     <div className={styles['messaage-input-box']}>
-        <input type="text" placeholder='Type a message to send ...'  value={newMessage} onChange={onTyping} onKeyDown={sendMessageHandler}/>
-        <Icon icon="mdi:image-add" width="28" height="28" color='gray'/>
-        <Icon icon="fluent:send-28-filled" onClick={sendMessageHandler}/>
+        <div ref={emojiPickerRef}>
+          <Icon icon="fluent:emoji-add-24-filled" color='#424242' style={{ marginLeft: '2px' }} onClick={emojiPickerHandler}/>
+          {showEmojiPicker && <EmojiPicker emojiStyle='native' onEmojiClick={emojiSelectHandler} />}
+        </div>
+        <input type="text" placeholder='Type a message to send ...'  onFocus={() => setShowEmojiPicker(false)} value={newMessage} onChange={onTyping} onKeyDown={sendMessageHandler} />
+        <Icon icon="fluent:send-28-filled" onClick={sendMessageHandler} />
     </div>
   )
 }

@@ -55,7 +55,6 @@ function Login() {
       setLoading(false);
       
     } catch (error) {
-      console.log(error);
       const { response } = error;
       const errorMess = response.data.error || error.message || 'Error Occured!';
       toast.error(`${errorMess}`, {
