@@ -3,8 +3,16 @@
     background: #FBECDA;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.logo-img {
+    height: 150px;
+    width: 150px;
+    margin-top: -30px;
+    margin-bottom: 20px;
 }
 
 /* .container p {

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Oval, ThreeDots } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LOGO_IMG from '../../assets/logo.png';
 
 function Register() {
 
@@ -101,6 +102,7 @@ function Register() {
 
   return (
     <div className={styles["container"]}>
+        <img className={styles['logo-img']} src={LOGO_IMG} alt='logo'/>
         <div className={styles['form-wrapper']}>
             <h2>Register</h2>
             <form onSubmit={submitHandler}>

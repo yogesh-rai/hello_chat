@@ -4,6 +4,7 @@ import Login from './pages/forms/Login';
 import Register from './pages/forms/Register';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import LOGO_IMG from '../src/assets/logo.png';
 
 
 function App() {
