@@ -35,7 +35,7 @@ const Search = () => {
           }
         };
 
-        const response = await axios.get(`api/user?search=${searchQuery}`, config);
+        const response = await axios.get(`api/user/getusers/?search=${searchQuery}`, config);
         const { data } = response;
         // console.log(response);
         setSearchRes(data);

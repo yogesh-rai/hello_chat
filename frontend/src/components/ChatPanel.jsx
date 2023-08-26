@@ -16,7 +16,7 @@ import {Effect} from 'react-notification-badge';
 import { useNavigate } from 'react-router-dom';
 
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://hello-chat-1dhx.onrender.com";
 
 var socket, selectedChatCompare;
 
@@ -24,7 +24,6 @@ const ChatPanel = ({messages, setMessages}) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
-  const [socketConnection, setSocketConnection] = useState(false);
   const { loggedInUser, selectedChat, setSelectedChat, notification, setNotification, fetchAgain, setFetchAgain } =  ChatState();
 
   useEffect(() => {
@@ -77,7 +76,7 @@ const ChatPanel = ({messages, setMessages}) => {
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", loggedInUser);
-    socket.on("connected", () => setSocketConnection(true));
+    socket.on("connected");
   }, [selectedChat]);
 
   useEffect(() => {

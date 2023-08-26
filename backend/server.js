@@ -1,5 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const http = require('http');
+const socketio = require('socket.io');
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
@@ -10,6 +12,7 @@ dotenv.config();
 
 connectDB();
 const app = express();
+const server = http.createServer(app);
 
 // to accept json data
 app.use(express.json());
@@ -42,9 +45,9 @@ if (process.env.NODE_ENV === "production") {
 const PORT = process.env.PORT || 5000;
 
 
-const server = app.listen(PORT, console.log(`server started on port ${PORT}`));
+server.listen(PORT, () => console.log(`server started on port ${PORT}`));
 
-const io = require('socket.io')(server, {
+const io = socketio(server, {
     pingTimeout: 60000,
     cors: {
         origin: "http://localhost:3000",
